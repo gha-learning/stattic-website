@@ -21,11 +21,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Upload artifact
         id: upload-artifact
         uses: actions/upload-artifact@v4
         with: 
-          path: ${{ inputs.source-folder }}
+          path: ${{github.workspace}}/${{ inputs.source-folder }}
           retention-days: 1 
 
