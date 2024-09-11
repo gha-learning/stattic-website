@@ -12,7 +12,7 @@ on:
 
 jobs:
   call-build:
-    uses: ${{ format('{0}/.github/workflows/ci.yaml@develop', github.repository) }}
+    uses: 'gha-learning/static-website/.github/workflows/ci.yaml@develop' 
     with:
       environment: ${{ inputs.environment || inputs.environment.default }}
       source-folder: '/'
