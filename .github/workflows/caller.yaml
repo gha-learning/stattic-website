@@ -12,7 +12,7 @@ on:
 
 jobs:
   call-build:
-  uses: ${{github.workspace }}/.github/workflows/ci.yaml@develop
-  with:
-    environment: ${{ inputs.environment || inputs.environment.default }}
-    source-folder: '/'
+    uses: ${{ format('{0}/.github/workflows/ci.yaml@develop', github.repository) }}
+    with:
+      environment: ${{ inputs.environment || inputs.environment.default }}
+      source-folder: '/'

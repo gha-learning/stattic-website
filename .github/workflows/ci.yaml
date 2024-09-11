@@ -10,25 +10,21 @@ on:
       required: true
       
   outputs:
-    github-artifact-name:
-      value: ${{ jobs.build.outputs.github-artifact-name  }}
+    github-artifact-id:
+      value: ${{ jobs.build.outputs.github-artifact-id  }}
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_ARTIFACT_NAME: 'gh-artifact'
-      SOURCE_FOLDER: '.'
-  outputs:
-    github-artifact-name: ${{ env.GITHUB_ARTIFACT_NAME}}
+    outputs:
+      github-artifact-id: ${{ steps.upload-artifact.outputs.artifact-id}}
 
-  steps:
-    - name: Checkout
-      uses: action/checkout@v4
-
-    - name: Publish
-      uses: actions/upload-artifact@v4
-      with: 
-        name: ${{ env.GITHUB_ARTIFACT_NAME }} 
-        path: ${{ env.SOURCE_FOLDER }}
-        retention-days: 1 
+    steps:
+      - name: Checkout
+        uses: action/checkout@v4
+      - name: Upload artifact
+        id: upload-artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          path: ${{ inputs.source-folder }}
+          retention-days: 1 
 
