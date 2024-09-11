@@ -14,5 +14,5 @@ jobs:
   call-build:
     uses: 'gha-learning/stattic-website/.github/workflows/ci.yaml@develop' 
     with:
-      environment: ${{ inputs.environment || inputs.environment.default }}
+      environment: ${{ inputs.environment }}
       source-folder: '/'

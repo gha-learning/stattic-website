@@ -8,10 +8,6 @@ on:
     source-folder:
       type: string
       required: true
-      
-  outputs:
-    github-artifact-id:
-      value: ${{ jobs.build.outputs.github-artifact-id  }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,9 +17,10 @@ jobs:
     steps:
       - name: Checkout
         uses: action/checkout@v4
+
       - name: Upload artifact
-        id: upload-artifact
         uses: actions/upload-artifact@v4
+        id: upload-artifact
         with: 
           path: ${{ inputs.source-folder }}
           retention-days: 1 
