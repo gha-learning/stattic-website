@@ -1,0 +1,56 @@
+name: Continuos deployment
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+        default: 'DEV'
+      artifact-name:
+        type: string
+        required: true
+      purge_cdn:
+        type: boolean
+        default: false
+
+
+jobs:
+  deploy:
+    environment: ${inputs.environment}
+    runs-on: ubuntu-latest
+    env:
+      TARGET: ${{github.workspace}}/target
+    
+    steps:
+
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{inputs.artifact-name }}
+        path: ${{ env.TARGET}}
+    
+    - name: Azure login
+      uses: azure/login@v2
+      with:
+          creds: ${{ secrets.AZURE_CREDENTIALS}}
+
+    - name: Upload to blob storage
+      uses: azure/CLI@V1
+      with:
+        inlineScript: |
+          az storage blob upload-batch --account-name ${{vars.storage_account_name}} --auth-mode key -d '$web' -s ${{env.target}}
+    
+    - name: Pruge CDN endpoint
+      if: ${{inputs.purge_cdn}}
+      uses: azure/CLI@V1
+      with:
+        inlinescript: |
+          az cdn endpoint purge --content-paths "/*" --profile-name "CDN_PROFILE_NAME" \
+          --name "CDN_ENDPOINT" --resource-group "RESOURCE_GROUP"
+    
+    - name: logout
+      if: always()
+      run: |
+        az logout
+    

@@ -11,12 +11,12 @@ on:
       
   outputs:
     github-artifact-id:
-      value: ${{ jobs.build.outputs.github-artifact-id  }}
+      value: ${{ jobs.build.outputs.github-artifact-name  }}
 jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      github-artifact-id: ${{ steps.upload-artifact.outputs.artifact-id}}
+      github-artifact-name: 'artifact'
 
     steps:
       - name: Checkout
@@ -25,7 +25,8 @@ jobs:
       - name: Upload artifact
         id: upload-artifact
         uses: actions/upload-artifact@v4
-        with: 
+        with:
+          name: 'artifact' 
           path: ${{github.workspace}}/${{ inputs.source-folder }}
           retention-days: 1 
 

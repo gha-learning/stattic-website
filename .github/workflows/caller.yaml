@@ -9,6 +9,9 @@ on:
           - 'HOM'
           - 'PRD'
         default: 'DEV'
+      purge_cdn:
+        type: boolean
+        default: false
 
 jobs:
   call-build:
@@ -16,3 +19,10 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       source-folder: 'src'
+  call-deploy:
+    needs: ['call-build']
+    uses: 'gha-learning/stattic-website/.github/workflows/cd.yaml@develop'
+    with:
+      artifact-name: ${{ needs.call-build.outputs.github-artifact-name}}
+      environment: ${{ inputs.environment}}
+      purge_cdn: ${{ inputs.purge_cdn }}
