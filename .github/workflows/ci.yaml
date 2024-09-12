@@ -10,7 +10,7 @@ on:
       required: true
       
   outputs:
-    github-artifact-id:
+    github-artifact-name:
       value: ${{ jobs.build.outputs.github-artifact-name  }}
 jobs:
   build:
