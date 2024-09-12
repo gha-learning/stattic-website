@@ -29,10 +29,6 @@ jobs:
       with:
         name: ${{inputs.artifact-name }}
         path: ${{ env.TARGET}}
-    - name: secret_check
-      run: |
-        echo ${{secrets.AZURE_CLIENT_ID}}
-        echo '"CLIENTID": "${{secrets.AZURE_CLIENT_ID}}"'
 
     
     - name: Azure login
