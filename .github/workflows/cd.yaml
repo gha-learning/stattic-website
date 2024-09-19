@@ -40,11 +40,19 @@ jobs:
         creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
     
+    - name: Check is Static website
+      if: ${{ inputs.destination_container == "$web"}}
+      run: |
+        staticWebsiteEnabled = $(az storage blob service-properties show --account-name ${{ vars.STORAGE_ACCOUNT_NAME }} --query "staticWebsite.enabled" --output tsv)
+        if [ "$static_website_enabled" != "true" ]; then
+          az storage blob service-properties update --account-name ${{ vars.STORAGE_ACCOUNT_NAME }}  --static-website --404-document 404.html --index-document index.html
+        fi
 
+      shell: bash
 
     - name: Upload to blob storage
       run: |
-        az storage blob upload-batch --destination '${{ inputs.destination_container }}' --source target/ --account-name ${{ vars.STORAGE_ACCOUNT_NAME }}
+        az storage blob upload-batch --destination '${{ inputs.destination_container }}' --source target/ --account-name ${{ vars.STORAGE_ACCOUNT_NAME }} ${{inputs.destination_container == "$web" && '--content-type "text/html; charset=utf-8"}}
     
     - name: Pruge CDN endpoint
       if: ${{inputs.purge_cdn}}
