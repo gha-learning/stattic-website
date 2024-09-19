@@ -12,6 +12,9 @@ on:
       purge_cdn:
         type: boolean
         default: false
+      destination_container:
+        type: string
+        required: true
 
 jobs:
   call-build:
@@ -27,4 +30,5 @@ jobs:
       artifact-name: ${{ needs.call-build.outputs.github-artifact-name}}
       environment: ${{ inputs.environment}}
       purge_cdn: ${{ inputs.purge_cdn }}
+      destination_containe: ${{ inputs.destination_container}}
     secrets: inherit
