@@ -30,5 +30,5 @@ jobs:
       artifact-name: ${{ needs.call-build.outputs.github-artifact-name}}
       environment: ${{ inputs.environment}}
       purge_cdn: ${{ inputs.purge_cdn }}
-      destination_containe: ${{ inputs.destination_container}}
+      destination_container: ${{ inputs.destination_container}}
     secrets: inherit
