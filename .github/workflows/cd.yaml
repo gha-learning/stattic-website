@@ -52,7 +52,7 @@ jobs:
 
     - name: Upload to blob storage
       run: |
-        az storage blob upload-batch --destination ${{ inputs.destination_container }} --source target/ --account-name ${{ vars.STORAGE_ACCOUNT_NAME }}
+        az storage blob upload-batch --destination '${{ inputs.destination_container }}' --source target/ --account-name ${{ vars.STORAGE_ACCOUNT_NAME }}
     
     - name: Pruge CDN endpoint
       if: ${{inputs.purge_cdn}}
