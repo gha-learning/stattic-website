@@ -41,7 +41,7 @@ jobs:
       uses: azure/cli@v2
       with:
         inlineScript: |
-          az storage blob upload-batch --account-name ${{vars.storage_account_name}} --auth-mode 'key' -d '$web' -s target/
+          az storage blob upload-batch --account-name ${{vars.storage_account_name}} --auth-mode login -d '$web' -s target/
     
     - name: Pruge CDN endpoint
       if: ${{inputs.purge_cdn}}
